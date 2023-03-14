@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.views import View
+from .models import Article
 
 
 def index(request, tags, article_id):
@@ -11,4 +12,9 @@ def index(request, tags, article_id):
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
-        return redirect(reverse('article_info', kwargs={'tags': 'python', 'article_id': 42}))
+        articles = Article.objects.all()[:15]
+        return render(
+            request,
+            'article/index.html',
+            context={'articles': articles, }
+        )
